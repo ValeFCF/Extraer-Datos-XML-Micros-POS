@@ -1,4 +1,4 @@
-Sub Extraer_Datos_Arbol_XML( ref xml_string, ref etiqueta_a_buscar ) 
+Sub Extraer_Datos_Arbol_XML( ref xml_string, var etiqueta_a_buscar: a50 ) 
     
     //Transformar palabra a buscar por etiqueta:
 
@@ -45,8 +45,8 @@ Sub Extraer_Datos_Arbol_XML( ref xml_string, ref etiqueta_a_buscar )
     var letraperletra: a1
 
     // Descomponer XML letra por letra
-    For counter = 1 To Len(Manda)
-        letraperletra = Mid(Manda, counter, 1) //lo importante es el counter, es el numero de espacio en el XML
+    For counter = 1 To Len(xml_string)
+        letraperletra = Mid(xml_string, counter, 1) //lo importante es el counter, es el numero de espacio en el XML
 
         if bool_cierre = 0 //para buscar el primer array
             if letraperletra = lista_palabra_a_buscar[ contadorVerificador ]
@@ -88,18 +88,21 @@ Sub Extraer_Datos_Arbol_XML( ref xml_string, ref etiqueta_a_buscar )
                         
                         bool_cierre = 1
                         ClearArray lista_palabra_a_buscar
-                        //infomessage "primer resultado tangible",Mid(manda,posicion_primer_etiqueta,20)
+                        //infomessage "primer resultado tangible",Mid(xml_string,posicion_primer_etiqueta,20)
                     else
                         posicion_etiqueta_cierre = counter - Len(buscar_palabraSemi)
 
                         posicion_a_contar = (posicion_etiqueta_cierre+1) - posicion_primer_etiqueta
 
                         ClearArray lista_palabra_a_buscar_cierre
-                        //infomessage "segundo resultado tangible",Mid(manda,posicion_primer_etiqueta,posicion_a_contar)
+                        //infomessage "segundo resultado tangible",Mid(xml_string,posicion_primer_etiqueta,posicion_a_contar)
                     
-                        DatoXML = Mid(manda,posicion_primer_etiqueta,posicion_a_contar)
-                        infomessage "DatoXML", DatoXML
-
+                    ///////////////////
+                        //DatoXML es el valor del resultado que se esta buscando, 
+                        // - el valor en medio de los tags -
+                        DatoXML = Mid(xml_string,posicion_primer_etiqueta,posicion_a_contar)
+                        //infomessage "DatoXML", Mid(DatoXML, 1, 80)
+                    //////////////////
                     endif
 
                     
@@ -118,7 +121,7 @@ Sub Extraer_Datos_Arbol_XML( ref xml_string, ref etiqueta_a_buscar )
                     // en caso de haber dos o mas "<", volvera a buscar desde ese punto + 1
                     actual_estado = counter - (Len(buscar_palabraSemi)-1)
                     
-                    //infomessage "actual_estado", Mid( manda,actual_estado, Len(buscar_palabraSemi) )
+                    //infomessage "actual_estado", Mid( xml_string,actual_estado, Len(buscar_palabraSemi) )
 
                     Split buscar_palabraSemi, "<", valorUno, valorDos
                     

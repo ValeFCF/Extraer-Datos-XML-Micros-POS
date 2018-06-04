@@ -1,3 +1,6 @@
+var posicion_etiqueta_cierre_Global: n10
+var iteration_array: a1 = "N"
+
 Sub Extraer_Datos_Arbol_XML( ref xml_string, var etiqueta_a_buscar: a50 ) 
     
     //Transformar palabra a buscar por etiqueta:
@@ -44,8 +47,14 @@ Sub Extraer_Datos_Arbol_XML( ref xml_string, var etiqueta_a_buscar: a50 )
     var counter: n4
     var letraperletra: a1
 
+    var xml_Counter_Start: n4 = 1
+
+    if iteration_array = "Y" // si es Y entonces el counter empieza en donde acabo de leer la ultima etiqueta
+        xml_Counter_Start = posicion_etiqueta_cierre_Global    
+    endif
+
     // Descomponer XML letra por letra
-    For counter = 1 To Len(xml_string)
+    For counter = xml_Counter_Start To Len(xml_string)
         letraperletra = Mid(xml_string, counter, 1) //lo importante es el counter, es el numero de espacio en el XML
 
         if bool_cierre = 0 //para buscar el primer array
@@ -94,6 +103,8 @@ Sub Extraer_Datos_Arbol_XML( ref xml_string, var etiqueta_a_buscar: a50 )
 
                         posicion_a_contar = (posicion_etiqueta_cierre+1) - posicion_primer_etiqueta
 
+                        posicion_etiqueta_cierre_Global = counter+1
+
                         ClearArray lista_palabra_a_buscar_cierre
                         //infomessage "segundo resultado tangible",Mid(xml_string,posicion_primer_etiqueta,posicion_a_contar)
                     
@@ -141,4 +152,27 @@ Sub Extraer_Datos_Arbol_XML( ref xml_string, var etiqueta_a_buscar: a50 )
 
     EndFor
     //infomessage "termino el for wey", letraperletra
+EndSub
+
+Sub Extraer_Datos_Arbol_Array_XML( var xml_string_array: a10000, var etiqueta_a_buscar_single: a50 )
+
+    var counterArray: n1
+
+    call Extraer_Datos_Arbol_XML( xml_string_array, etiqueta_a_buscar_single )
+    Array_Item[1] = Trim(DatoXML)
+    
+    iteration_array = "Y" // empieza la iteracion
+    
+    For counterArray = 2 To 5
+
+        if Len(Trim(Mid(xml_string_array, posicion_etiqueta_cierre_Global,80))) > 0 //aun hay mas iteraciones?
+            call Extraer_Datos_Arbol_XML( xml_string_array, etiqueta_a_buscar_single )
+            Array_Item[ counterArray ] = Trim(DatoXML)
+        else
+            Array_Item[ counterArray ] = ""
+        endif
+    EndFor
+
+    iteration_array = "N"
+
 EndSub

@@ -1,7 +1,7 @@
 # Extraer-Datos-XML-Micros-POS
 Clase para extraer datos de un string en forma de XML, para el POS Micros 3700
 
-# Modo de uso
+## Modo de uso
 > Extraer_Datos_Arbol_XML( ref xml_string, var etiqueta_a_buscar: a50 ) 
 
 Método invocado desde otra parte del código para obtener el cuerpo de una etiqueta en un XML
